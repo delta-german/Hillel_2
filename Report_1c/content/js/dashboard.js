@@ -133,7 +133,7 @@ $(document).ready(function() {
         widgets: ['zebra']
     });
 
-    var data = {"OkPercent": 96.12625, "KoPercent": 3.87375};
+    var data = {"OkPercent": 99.74, "KoPercent": 0.26};
     var dataset = [
         {
             "label" : "FAIL",
@@ -173,7 +173,7 @@ $(document).ready(function() {
     });
 
     // Creates APDEX table
-    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.70145, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.63785, 500, 1500, "HTTP Request Get character by id"], "isController": false}, {"data": [0.532625, 500, 1500, "HTTP Request Get characters"], "isController": false}, {"data": [0.81985, 500, 1500, "HTTP Request Update character by id"], "isController": false}, {"data": [0.815475, 500, 1500, "HTTP Request Create character"], "isController": false}]}, function(index, item){
+    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.940575, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.990175, 500, 1500, "HTTP Request Delete character"], "isController": false}, {"data": [0.99025, 500, 1500, "HTTP Request Get character by id"], "isController": false}, {"data": [0.7504, 500, 1500, "HTTP Request Get characters"], "isController": false}, {"data": [0.991325, 500, 1500, "HTTP Request Update character by id"], "isController": false}, {"data": [0.980725, 500, 1500, "HTTP Request Create character"], "isController": false}]}, function(index, item){
         switch(index){
             case 0:
                 item = item.toFixed(3);
@@ -187,7 +187,7 @@ $(document).ready(function() {
     }, [[0, 0]], 3);
 
     // Create statistics table
-    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 80000, 3099, 3.87375, 6511.594862499989, 1, 232991, 689.0, 3037.5000000000073, 22940.95, 192173.0, 338.3379149925988, 37481.56402813756, 62.185125191636715], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["HTTP Request Get character by id", 20000, 324, 1.62, 5193.544400000003, 2, 132679, 458.5, 18007.70000000002, 27385.0, 85096.96, 84.6141804905084, 24.97716408699184, 13.331955708707223], "isController": false}, {"data": ["HTTP Request Get characters", 20000, 2719, 13.595, 19319.957899999918, 7, 232991, 759.0, 82507.00000000001, 130105.0, 192173.0, 84.58662516282925, 37411.476259805444, 11.491229325178479], "isController": false}, {"data": ["HTTP Request Update character by id", 20000, 0, 0.0, 578.7987499999989, 1, 27808, 236.0, 1343.0, 2053.9500000000007, 3144.0, 84.68440240334334, 22.57699400011009, 18.938211084341432], "isController": false}, {"data": ["HTTP Request Create character", 20000, 56, 0.28, 954.0784000000002, 1, 43687, 233.0, 1442.0, 2321.9500000000007, 19717.0, 84.67759007578644, 23.54423593690461, 18.471357805156867], "isController": false}]}, function(index, item){
+    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 100000, 260, 0.26, 952.9170400000002, 0, 36472, 76.0, 149.0, 204.0, 33925.0, 2620.8197924310725, 6309.259960343721, 492.246494039273], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["HTTP Request Delete character", 20000, 0, 0.0, 159.00209999999907, 0, 806, 124.0, 321.0, 398.0, 582.9800000000032, 534.6307038413216, 152.97538693897192, 97.06531077915743], "isController": false}, {"data": ["HTTP Request Get character by id", 20000, 0, 0.0, 155.63024999999936, 1, 681, 119.0, 339.0, 398.0, 536.9900000000016, 531.3778627982358, 141.62109997708433, 85.058417315944], "isController": false}, {"data": ["HTTP Request Get characters", 20000, 260, 1.3, 4137.6274, 0, 36472, 150.0, 18748.0, 25782.95, 33925.0, 524.3701004168743, 5739.881116490456, 81.37312455756273], "isController": false}, {"data": ["HTTP Request Update character by id", 20000, 0, 0.0, 154.16249999999863, 0, 681, 119.0, 335.0, 384.0, 540.0, 533.8458253256459, 142.27885332419123, 119.34016551722988], "isController": false}, {"data": ["HTTP Request Create character", 20000, 0, 0.0, 158.16295000000005, 1, 2979, 118.0, 338.0, 478.0, 549.9900000000016, 525.7761770814164, 142.69542340591235, 115.01353873655984], "isController": false}]}, function(index, item){
         switch(index){
             // Errors pct
             case 3:
@@ -217,7 +217,7 @@ $(document).ready(function() {
     }, [[0, 0]], 0, summaryTableHeader);
 
     // Create error table
-    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": [{"data": ["Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 3099, 100.0, 3.87375], "isController": false}]}, function(index, item){
+    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": [{"data": ["Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 260, 100.0, 0.26], "isController": false}]}, function(index, item){
         switch(index){
             case 2:
             case 3:
@@ -228,7 +228,7 @@ $(document).ready(function() {
     }, [[1, 1]]);
 
         // Create top5 errors by sampler
-    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 80000, 3099, "Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 3099, "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": ["HTTP Request Get character by id", 20000, 324, "Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 324, "", "", "", "", "", "", "", ""], "isController": false}, {"data": ["HTTP Request Get characters", 20000, 2719, "Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 2719, "", "", "", "", "", "", "", ""], "isController": false}, {"data": [], "isController": false}, {"data": ["HTTP Request Create character", 20000, 56, "Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 56, "", "", "", "", "", "", "", ""], "isController": false}]}, function(index, item){
+    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 100000, 260, "Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 260, "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": [], "isController": false}, {"data": [], "isController": false}, {"data": ["HTTP Request Get characters", 20000, 260, "Non HTTP response code: org.apache.http.NoHttpResponseException/Non HTTP response message: localhost:3001 failed to respond", 260, "", "", "", "", "", "", "", ""], "isController": false}, {"data": [], "isController": false}, {"data": [], "isController": false}]}, function(index, item){
         return item;
     }, [[0, 0]], 0);
 
