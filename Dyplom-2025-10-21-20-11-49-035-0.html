@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+<style>
+code.renderMarkdown table, code.renderMarkdown th, code.renderMarkdown td {
+    border: 1px solid black;
+    width: max-content;
+    padding: .75rem;
+}
+
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: 69px;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+}
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+}
+
+body.theme-light code {
+    color: #000000!important;
+}
+
+.text-wrap {
+    word-wrap: break-word; 
+    min-width: 600px; 
+    max-width: 600px; 
+    white-space: normal;
+}
+
+</style>
+</head>
+<body class="theme-dark">
+<script>
+    function setTheme(themeName) {
+        localStorage.setItem('theme', themeName);
+        document.body.className = themeName;
+    }
+
+    function toggleTheme() {
+        if (localStorage.getItem('theme') === 'theme-light') {
+            setTheme('theme-dark');
+        } else {
+            setTheme('theme-light');
+        }
+    }
+</script>
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">5</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">0</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab">
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-2 text-center">Newman Run Dashboard</h1>
+   <h5 class="text-center">Tuesday, 21 October 2025 23:11:48</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">9</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> Dyplom<br>
+                
+                
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 892ms<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 43.02KB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 83ms<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">5</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">5</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Assertions</td>
+                        <td class="text-center">9</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                     <br><br><h1 class="text-center">There are no failed tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="openAll" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Folders</button>
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <nav class="table-responsive">
+        <ul class="nav single-line-tabs" id="iterationList">
+        </ul>
+        </nav>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+            <div id="folder-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0" aria-expanded="false" aria-controls="collapse" id="requests-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0" class="collapsed text-white z-block">
+                    Iteration: 1 - Create new user <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0" class="collapse" aria-labelledby="requests-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">Using the &#x60;/findOne&#x60; endpoint will let you retrieve a single document from a collection. Use the &#x60;filter&#x60; property in the request body to specify the search criteria. If more than one document matches the criteria, only the first match will be returned.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> POST</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="http://localhost:3000/api/listingsAndReviews" target="_blank">http://localhost:3000/api/listingsAndReviews</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 201 - Created</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 147ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 213B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Access-Control-Request-Headers</td>
+                                                        <td class="text-wrap">*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">api-key</td>
+                                                        <td class="text-wrap">{{newAPIkey}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Type</td>
+                                                        <td class="text-wrap">application/json</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">4b119c49-bea5-4322-89bc-05e9c5f0fb9c</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">localhost:3000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Length</td>
+                                                        <td class="text-wrap">166</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Body</h5>
+                                        <div class="dyn-height">
+                                            <pre><code id="copyReqText-0" class="prettyPrint">{
+            &quot;name&quot;: &quot;Marcellus local test&quot;,
+            &quot;email&quot;: &quot;Rafael9@yahoo.com&quot;,
+            &quot;password&quot;: &quot;$2b$10$7w6pwaAKutqOUqihO8Xc..57hl0sTvIKGwqUK0Sxebe4Z3vnA0hv6&quot;,
+            &quot;__v&quot;: 0
+        }</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyReqText-0">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">Express</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">213</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">ETag</td>
+                                                    <td class="text-wrap">W/&quot;d5-hesS+3thUeGWbKKhYLMkQLyKIuQ&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Tue, 21 Oct 2025 20:11:48 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Keep-Alive</td>
+                                                    <td class="text-wrap">timeout&#x3D;5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-c7c61045-b39f-48df-84de-4a89360e0d99" class="prettyPrint">{&quot;_id&quot;:&quot;68f7e903acdd47e1bc9ac5e5&quot;,&quot;name&quot;:&quot;Marcellus local test&quot;,&quot;email&quot;:&quot;Rafael9@yahoo.com&quot;,&quot;password&quot;:&quot;$2b$10$7w6pwaAKutqOUqihO8Xc..57hl0sTvIKGwqUK0Sxebe4Z3vnA0hv6&quot;,&quot;__v&quot;:0,&quot;createdAt&quot;:&quot;2025-10-21T20:11:47.992Z&quot;}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-c7c61045-b39f-48df-84de-4a89360e0d99">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code is 201</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Response has JSON Content-Type</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-8cb798e2-a7b3-49e7-922e-d2ae27c97097" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097" aria-expanded="false" aria-controls="collapse" id="requests-8cb798e2-a7b3-49e7-922e-d2ae27c97097" class="collapsed text-white z-block">
+                    Iteration: 1 - Get user <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097" class="collapse" aria-labelledby="requests-8cb798e2-a7b3-49e7-922e-d2ae27c97097">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">Using the &#x60;/findOne&#x60; endpoint will let you retrieve a single document from a collection. Use the &#x60;filter&#x60; property in the request body to specify the search criteria. If more than one document matches the criteria, only the first match will be returned.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="http://localhost:3000/api/listingsAndReviews/68f7e903acdd47e1bc9ac5e5" target="_blank">http://localhost:3000/api/listingsAndReviews/68f7e903acdd47e1bc9ac5e5</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 47ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 213B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Access-Control-Request-Headers</td>
+                                                        <td class="text-wrap">*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">api-key</td>
+                                                        <td class="text-wrap">{{newAPIkey}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">075f672a-ba6d-4724-bb3e-03c4ee6184e7</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">localhost:3000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">Express</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">213</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">ETag</td>
+                                                    <td class="text-wrap">W/&quot;d5-hesS+3thUeGWbKKhYLMkQLyKIuQ&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Tue, 21 Oct 2025 20:11:48 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Keep-Alive</td>
+                                                    <td class="text-wrap">timeout&#x3D;5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-39772af7-1574-492c-bdd6-b9ca05ca74b8" class="prettyPrint">{&quot;_id&quot;:&quot;68f7e903acdd47e1bc9ac5e5&quot;,&quot;name&quot;:&quot;Marcellus local test&quot;,&quot;email&quot;:&quot;Rafael9@yahoo.com&quot;,&quot;password&quot;:&quot;$2b$10$7w6pwaAKutqOUqihO8Xc..57hl0sTvIKGwqUK0Sxebe4Z3vnA0hv6&quot;,&quot;__v&quot;:0,&quot;createdAt&quot;:&quot;2025-10-21T20:11:47.992Z&quot;}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-39772af7-1574-492c-bdd6-b9ca05ca74b8">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Contains required fields</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Email has valid format</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-098aab2d-584e-40c6-9f22-3e8f3c5e3029" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029" aria-expanded="false" aria-controls="collapse" id="requests-098aab2d-584e-40c6-9f22-3e8f3c5e3029" class="collapsed text-white z-block">
+                    Iteration: 1 - Edit user <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029" class="collapse" aria-labelledby="requests-098aab2d-584e-40c6-9f22-3e8f3c5e3029">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">Using the &#x60;/findOne&#x60; endpoint will let you retrieve a single document from a collection. Use the &#x60;filter&#x60; property in the request body to specify the search criteria. If more than one document matches the criteria, only the first match will be returned.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> PUT</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="http://localhost:3000/api/listingsAndReviews/68f7e903acdd47e1bc9ac5e5" target="_blank">http://localhost:3000/api/listingsAndReviews/68f7e903acdd47e1bc9ac5e5</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 49ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 253B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Access-Control-Request-Headers</td>
+                                                        <td class="text-wrap">*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">api-key</td>
+                                                        <td class="text-wrap">{{newAPIkey}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Type</td>
+                                                        <td class="text-wrap">application/json</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">8df339f2-7cbc-4cb8-9f36-edc9fc2e9075</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">localhost:3000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Length</td>
+                                                        <td class="text-wrap">218</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Body</h5>
+                                        <div class="dyn-height">
+                                            <pre><code id="copyReqText-2" class="prettyPrint">{
+            &quot;name&quot;: &quot;1Marcellus local test&quot;,
+            &quot;email&quot;: &quot;Rafael9@yahoo.com&quot;,
+            &quot;password&quot;: &quot;$2b$10$7w6pwaAKutqOUqihO8Xc..57hl0sTvIKGwqUK0Sxebe4Z3vnA0hv6&quot;,
+            &quot;__v&quot;: 1,
+            &quot;createdAt&quot;: &quot;2025-10-19T19:37:32.074Z&quot;
+        }</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyReqText-2">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">Express</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">253</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">ETag</td>
+                                                    <td class="text-wrap">W/&quot;fd-t1G/NVF2PHcCpOfylZzygh7I5MU&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Tue, 21 Oct 2025 20:11:48 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Keep-Alive</td>
+                                                    <td class="text-wrap">timeout&#x3D;5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-65fabcf8-6d30-4fca-b22a-2d9ee62c21a5" class="prettyPrint">{&quot;_id&quot;:&quot;68f7e903acdd47e1bc9ac5e5&quot;,&quot;name&quot;:&quot;1Marcellus local test&quot;,&quot;email&quot;:&quot;Rafael9@yahoo.com&quot;,&quot;password&quot;:&quot;$2b$10$7w6pwaAKutqOUqihO8Xc..57hl0sTvIKGwqUK0Sxebe4Z3vnA0hv6&quot;,&quot;__v&quot;:1,&quot;createdAt&quot;:&quot;2025-10-19T19:37:32.074Z&quot;,&quot;updatedAt&quot;:&quot;2025-10-21T20:11:48.333Z&quot;}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-65fabcf8-6d30-4fca-b22a-2d9ee62c21a5">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code is 200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9" aria-expanded="false" aria-controls="collapse" id="requests-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9" class="collapsed text-white z-block">
+                    Iteration: 1 - Delete user <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9" class="collapse" aria-labelledby="requests-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">Using the &#x60;/findOne&#x60; endpoint will let you retrieve a single document from a collection. Use the &#x60;filter&#x60; property in the request body to specify the search criteria. If more than one document matches the criteria, only the first match will be returned.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> DELETE</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="http://localhost:3000/api/listingsAndReviews/68f7e903acdd47e1bc9ac5e5" target="_blank">http://localhost:3000/api/listingsAndReviews/68f7e903acdd47e1bc9ac5e5</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 55ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 319B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Access-Control-Request-Headers</td>
+                                                        <td class="text-wrap">*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">api-key</td>
+                                                        <td class="text-wrap">{{newAPIkey}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">9f863587-f40f-4548-a5e7-05067f531375</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">localhost:3000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">Express</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">319</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">ETag</td>
+                                                    <td class="text-wrap">W/&quot;13f-XCgEGHkq1MisK30mTKS3GAC2D3c&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Tue, 21 Oct 2025 20:11:48 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Keep-Alive</td>
+                                                    <td class="text-wrap">timeout&#x3D;5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-5102034f-b8c2-4304-92ec-ca1dd9620d78" class="prettyPrint">{&quot;message&quot;:&quot;Документ видалено&quot;,&quot;deletedDocument&quot;:{&quot;_id&quot;:&quot;68f7e903acdd47e1bc9ac5e5&quot;,&quot;name&quot;:&quot;1Marcellus local test&quot;,&quot;email&quot;:&quot;Rafael9@yahoo.com&quot;,&quot;password&quot;:&quot;$2b$10$7w6pwaAKutqOUqihO8Xc..57hl0sTvIKGwqUK0Sxebe4Z3vnA0hv6&quot;,&quot;__v&quot;:1,&quot;createdAt&quot;:&quot;2025-10-19T19:37:32.074Z&quot;,&quot;updatedAt&quot;:&quot;2025-10-21T20:11:48.333Z&quot;}}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-5102034f-b8c2-4304-92ec-ca1dd9620d78">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code is 200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Message confirms deletion</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-41fbe65c-eacc-4611-a712-a48bc5ba3b7e" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e" aria-expanded="false" aria-controls="collapse" id="requests-41fbe65c-eacc-4611-a712-a48bc5ba3b7e" class="collapsed text-white z-block">
+                    Iteration: 1 - Get users by query <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e" class="collapse" aria-labelledby="requests-41fbe65c-eacc-4611-a712-a48bc5ba3b7e">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Description</h5>
+                                        <div class="dyn-height">
+                                            <code class="renderMarkdown">Using the &#x60;/findOne&#x60; endpoint will let you retrieve a single document from a collection. Use the &#x60;filter&#x60; property in the request body to specify the search criteria. If more than one document matches the criteria, only the first match will be returned.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="http://localhost:3000/api/listingsAndReviews/search/query?accommodates&#x3D;8&amp;cancellation_policy&#x3D;moderate&amp;property_type&#x3D;Apartment&amp;bathrooms&#x3D;2.0&amp;bedrooms&#x3D;2" target="_blank">http://localhost:3000/api/listingsAndReviews/search/query?accommodates&#x3D;8&amp;cancellation_policy&#x3D;moderate&amp;property_type&#x3D;Apartment&amp;bathrooms&#x3D;2.0&amp;bedrooms&#x3D;2</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 119ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 42.04KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Access-Control-Request-Headers</td>
+                                                        <td class="text-wrap">*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">api-key</td>
+                                                        <td class="text-wrap">{{newAPIkey}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">3ba827e3-d4ab-4ca7-9a4e-fc90e8b39493</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">localhost:3000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">Express</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">43050</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">ETag</td>
+                                                    <td class="text-wrap">W/&quot;a82a-3dMKpkb5rbrAoizrUNOC46t0xvI&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Tue, 21 Oct 2025 20:11:48 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Keep-Alive</td>
+                                                    <td class="text-wrap">timeout&#x3D;5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-fc67549a-dea9-4fc4-94b4-fade9386c24f" class="prettyPrint">[{&quot;_id&quot;:&quot;22973623&quot;,&quot;listing_url&quot;:&quot;https://www.airbnb.com/rooms/22973623&quot;,&quot;name&quot;:&quot;Spacious and Comfy 2BR apartment Heart Of downtown&quot;,&quot;summary&quot;:&quot;This awesome apartment is perfectly located in the heart of downtown (Golden Square) in a luxurious building. It features a modern kitchen, bathroom, and spacious living spaces. Guests can also enjoy complimentary access to amenities (gym in the building). It&#x27;s a minute away from Sainte-Catherine street, Crescent street, Place des Arts, Centre Bell, Museum; Also you have the city&#x27;s best attractions and restaurants.  It is the ideal home to enjoy Montreal&#x27;s active scenes in a luxurious atmosphere&quot;,&quot;space&quot;:&quot;The apartment is in the centre of everything and will be able to really get the full Montreal experience! Spacious, fully equipped and walking distance to many attractions. Bars and restaurants Queen size bed, two couches/sofa beds, Smart Tv with PS4 Ops III cast to stream anything from your phone, laptop HDMI,  Concierge in the building&quot;,&quot;description&quot;:&quot;This awesome apartment is perfectly located in the heart of downtown (Golden Square) in a luxurious building. It features a modern kitchen, bathroom, and spacious living spaces. Guests can also enjoy complimentary access to amenities (gym in the building). It&#x27;s a minute away from Sainte-Catherine street, Crescent street, Place des Arts, Centre Bell, Museum; Also you have the city&#x27;s best attractions and restaurants.  It is the ideal home to enjoy Montreal&#x27;s active scenes in a luxurious atmosphere The apartment is in the centre of everything and will be able to really get the full Montreal experience! Spacious, fully equipped and walking distance to many attractions. Bars and restaurants Queen size bed, two couches/sofa beds, Smart Tv with PS4 Ops III cast to stream anything from your phone, laptop HDMI,  Concierge in the building Guests will have access to the entire apartment, a gym, sauna and a Terrace. Only one closet is locked in the small room Guests are welcome to contact me for a&quot;,&quot;neighborhood_overview&quot;:&quot;Saint Catherine one block, and Sait Crescent is also One Block. Best Restaurants in the city. All week and specially Weekends are always  busy around here. Close to everything fun in Montreal. Best location.&quot;,&quot;notes&quot;:&quot;Please communicate with me and let me know what time you plan to arrive for the check-in.&quot;,&quot;transit&quot;:&quot;The building is a few blocks away from Guy Concordia University, and McGill University. The heart of Downtown In the Golden Square&quot;,&quot;access&quot;:&quot;Guests will have access to the entire apartment, a gym, sauna and a Terrace. Only one closet is locked in the small room&quot;,&quot;interaction&quot;:&quot;Guests are welcome to contact me for any further question&quot;,&quot;house_rules&quot;:&quot;No parties  No Smoking&quot;,&quot;property_type&quot;:&quot;Apartment&quot;,&quot;room_type&quot;:&quot;Entire home/apt&quot;,&quot;bed_type&quot;:&quot;Real Bed&quot;,&quot;minimum_nights&quot;:&quot;1&quot;,&quot;maximum_nights&quot;:&quot;10&quot;,&quot;cancellation_policy&quot;:&quot;moderate&quot;,&quot;last_scraped&quot;:&quot;2019-03-11T04:00:00.000Z&quot;,&quot;calendar_last_scraped&quot;:&quot;2019-03-11T04:00:00.000Z&quot;,&quot;first_review&quot;:&quot;2018-02-25T05:00:00.000Z&quot;,&quot;last_review&quot;:&quot;2019-02-25T05:00:00.000Z&quot;,&quot;accommodates&quot;:8,&quot;bedrooms&quot;:2,&quot;beds&quot;:3,&quot;number_of_reviews&quot;:84,&quot;bathrooms&quot;:{&quot;$numberDecimal&quot;:&quot;2.0&quot;},&quot;amenities&quot;:[&quot;TV&quot;,&quot;Wifi&quot;,&quot;Air conditioning&quot;,&quot;Kitchen&quot;,&quot;Paid parking off premises&quot;,&quot;Gym&quot;,&quot;Elevator&quot;,&quot;Heating&quot;,&quot;Washer&quot;,&quot;Dryer&quot;,&quot;Smoke detector&quot;,&quot;Carbon monoxide detector&quot;,&quot;First aid kit&quot;,&quot;Fire extinguisher&quot;,&quot;Essentials&quot;,&quot;Shampoo&quot;,&quot;Lock on bedroom door&quot;,&quot;Hangers&quot;,&quot;Hair dryer&quot;,&quot;Iron&quot;,&quot;Laptop friendly workspace&quot;,&quot;Self check-in&quot;,&quot;Keypad&quot;,&quot;Private living room&quot;,&quot;Private entrance&quot;,&quot;Hot water&quot;,&quot;Extra pillows and blankets&quot;,&quot;Microwave&quot;,&quot;Coffee maker&quot;,&quot;Refrigerator&quot;,&quot;Dishwasher&quot;,&quot;Dishes and silverware&quot;,&quot;Cooking basics&quot;,&quot;Oven&quot;,&quot;Stove&quot;,&quot;Long term stays allowed&quot;,&quot;Wide hallway clearance&quot;,&quot;Wide doorway&quot;,&quot;Flat path to front door&quot;,&quot;Well-lit path to entrance&quot;,&quot;Step-free access&quot;,&quot;Accessible-height toilet&quot;],&quot;price&quot;:{&quot;$numberDecimal&quot;:&quot;150.00&quot;},&quot;security_deposit&quot;:{&quot;$numberDecimal&quot;:&quot;300.00&quot;},&quot;cleaning_fee&quot;:{&quot;$numberDecimal&quot;:&quot;80.00&quot;},&quot;extra_people&quot;:{&quot;$numberDecimal&quot;:&quot;10.00&quot;},&quot;guests_included&quot;:{&quot;$numberDecimal&quot;:&quot;4&quot;},&quot;images&quot;:{&quot;thumbnail_url&quot;:&quot;&quot;,&quot;medium_url&quot;:&quot;&quot;,&quot;picture_url&quot;:&quot;https://a0.muscache.com/im/pictures/208884aa-189b-4f47-b507-473daa5f880f.jpg?aki_policy&#x3D;large&quot;,&quot;xl_picture_url&quot;:&quot;&quot;},&quot;host&quot;:{&quot;host_id&quot;:&quot;19144115&quot;,&quot;host_url&quot;:&quot;https://www.airbnb.com/users/show/19144115&quot;,&quot;host_name&quot;:&quot;Mohammed&quot;,&quot;host_location&quot;:&quot;Montreal, Quebec, Canada&quot;,&quot;host_about&quot;:&quot;&quot;,&quot;host_response_time&quot;:&quot;within an hour&quot;,&quot;host_thumbnail_url&quot;:&quot;https://a0.muscache.com/im/pictures/user/633345f9-4ac0-4bab-bb76-7d6ad9c26287.jpg?aki_policy&#x3D;profile_small&quot;,&quot;host_picture_url&quot;:&quot;https://a0.muscache.com/im/pictures/user/633345f9-4ac0-4bab-bb76-7d6ad9c26287.jpg?aki_policy&#x3D;profile_x_medium&quot;,&quot;host_neighbourhood&quot;:&quot;Le Plateau&quot;,&quot;host_response_rate&quot;:97,&quot;host_is_superhost&quot;:false,&quot;host_has_profile_pic&quot;:true,&quot;host_identity_verified&quot;:false,&quot;host_listings_count&quot;:4,&quot;host_total_listings_count&quot;:4,&quot;host_verifications&quot;:[&quot;email&quot;,&quot;phone&quot;,&quot;jumio&quot;,&quot;offline_government_id&quot;,&quot;selfie&quot;,&quot;government_id&quot;,&quot;identity_manual&quot;]},&quot;address&quot;:{&quot;street&quot;:&quot;Montréal, QC, Canada&quot;,&quot;suburb&quot;:&quot;Downtown Montreal&quot;,&quot;government_area&quot;:&quot;Ville-Marie&quot;,&quot;market&quot;:&quot;Montreal&quot;,&quot;country&quot;:&quot;Canada&quot;,&quot;country_code&quot;:&quot;CA&quot;,&quot;location&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-73.57628,45.49798],&quot;is_location_exact&quot;:false}},&quot;availability&quot;:{&quot;availability_30&quot;:17,&quot;availability_60&quot;:44,&quot;availability_90&quot;:68,&quot;availability_365&quot;:100},&quot;review_scores&quot;:{&quot;review_scores_accuracy&quot;:10,&quot;review_scores_cleanliness&quot;:9,&quot;review_scores_checkin&quot;:10,&quot;review_scores_communication&quot;:10,&quot;review_scores_location&quot;:10,&quot;review_scores_value&quot;:10,&quot;review_scores_rating&quot;:94},&quot;reviews&quot;:[{&quot;_id&quot;:&quot;238290991&quot;,&quot;date&quot;:&quot;2018-02-25T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;174415255&quot;,&quot;reviewer_name&quot;:&quot;Daniel&quot;,&quot;comments&quot;:&quot;Greatt host and house&quot;},{&quot;_id&quot;:&quot;239613313&quot;,&quot;date&quot;:&quot;2018-03-02T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;167117330&quot;,&quot;reviewer_name&quot;:&quot;Mohammed&quot;,&quot;comments&quot;:&quot;What an amazing place, this is the best Airbnb experience so far I would definitely recommend it to anyone that goes to Montreal and would like to stay close to everything, the host is super nice and quick in responding. He provided us fruits and breakfast when we arrived,also chocolate, and water.&quot;},{&quot;_id&quot;:&quot;240407256&quot;,&quot;date&quot;:&quot;2018-03-04T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;175545541&quot;,&quot;reviewer_name&quot;:&quot;Mashuk&quot;,&quot;comments&quot;:&quot;The place is perfect. It has a great view. Literally anything and everything is walkable distance and our host set up the place very nicely for us and we truly felt comfortable. He was also extremely accessible and kind, as were the workers in the apartments. Highly recommend!&quot;},{&quot;_id&quot;:&quot;241787019&quot;,&quot;date&quot;:&quot;2018-03-10T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;95445155&quot;,&quot;reviewer_name&quot;:&quot;Tremayne&quot;,&quot;comments&quot;:&quot;Great location! Just minutes away from public transit and lots of shopping along Ste. Catherine. Check in was easy, and the concierge gave us no trouble at all. The room has lots of space, and is very accommodating for large groups. Will definitely book again! Highly recommend.&quot;},{&quot;_id&quot;:&quot;242861855&quot;,&quot;date&quot;:&quot;2018-03-13T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;163734770&quot;,&quot;reviewer_name&quot;:&quot;Ian&quot;,&quot;comments&quot;:&quot;The apartment was great to stay in. A very spacious space for my friends and I.  The location was fantastic with everything we needed close by.&quot;},{&quot;_id&quot;:&quot;243584825&quot;,&quot;date&quot;:&quot;2018-03-16T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;41471361&quot;,&quot;reviewer_name&quot;:&quot;Justin&quot;,&quot;comments&quot;:&quot;The location and the floor to ceiling windows are the selling features here. Mohammed is easy to communicate with and quick to respond. It ranks better than average amongst the places I&#x60;ve stayed in Montreal, and its central to most highlights in the downtown core. It offers a better price than many, but is a little lacking in amenities. All in all, we had a good time here.&quot;},{&quot;_id&quot;:&quot;244366227&quot;,&quot;date&quot;:&quot;2018-03-18T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;39217642&quot;,&quot;reviewer_name&quot;:&quot;James&quot;,&quot;comments&quot;:&quot;A large space with two bedrooms and two washroom that is in the centre of everything. Mohammed was very responsive. Looking forward to staying there again.&quot;},{&quot;_id&quot;:&quot;247185720&quot;,&quot;date&quot;:&quot;2018-03-27T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;151680438&quot;,&quot;reviewer_name&quot;:&quot;Angela&quot;,&quot;comments&quot;:&quot;Great place, super spacious and comfy beds! Great location, everything you could need! Mohammad was very nice and responded quickly! Would definitely stay again!&quot;},{&quot;_id&quot;:&quot;250037082&quot;,&quot;date&quot;:&quot;2018-04-03T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;174406407&quot;,&quot;reviewer_name&quot;:&quot;Jaclyn&quot;,&quot;comments&quot;:&quot;Lovely place! Big open layout, comfy beds! Location was perfect. Mohammed was kind enough to let us store our luggage as we had a few hours to kill before heading to the airport!!&quot;},{&quot;_id&quot;:&quot;250563116&quot;,&quot;date&quot;:&quot;2018-04-05T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;60133652&quot;,&quot;reviewer_name&quot;:&quot;Marie&quot;,&quot;comments&quot;:&quot;Bel appartement spacieux, lumineux, bien aménagé. Emplacement au top. On recommande!!&quot;},{&quot;_id&quot;:&quot;251740713&quot;,&quot;date&quot;:&quot;2018-04-08T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;181858906&quot;,&quot;reviewer_name&quot;:&quot;Michelle&quot;,&quot;comments&quot;:&quot;Beautiful apartment and fantastic location! Everything you need it right there.&quot;},{&quot;_id&quot;:&quot;252647882&quot;,&quot;date&quot;:&quot;2018-04-11T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;164709991&quot;,&quot;reviewer_name&quot;:&quot;Elizabeth&quot;,&quot;comments&quot;:&quot;Great location.&quot;},{&quot;_id&quot;:&quot;255743990&quot;,&quot;date&quot;:&quot;2018-04-21T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;46506908&quot;,&quot;reviewer_name&quot;:&quot;Justues&quot;,&quot;comments&quot;:&quot;Excellent place in heart of downtown in a nice area. Quiet. Huge 2 bedroom condo.&quot;},{&quot;_id&quot;:&quot;256367020&quot;,&quot;date&quot;:&quot;2018-04-22T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;183097774&quot;,&quot;reviewer_name&quot;:&quot;Josette&quot;,&quot;comments&quot;:&quot;J&#x27;y retournerais sans hésité !&quot;},{&quot;_id&quot;:&quot;257305885&quot;,&quot;date&quot;:&quot;2018-04-25T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;13615936&quot;,&quot;reviewer_name&quot;:&quot;Matthew&quot;,&quot;comments&quot;:&quot;Great spot!  Heart of downtown.  Parking&#x27;s not fun or cheap but that&#x27;s to be expected downtown.  Living room with floor to ceiling windows is great.  Somewhat hard to sleep in on sunny days with the light curtains but the windows when closed, block out the noise really well.  The host is very accommodating and quick to respond!&quot;},{&quot;_id&quot;:&quot;257855702&quot;,&quot;date&quot;:&quot;2018-04-27T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;18275466&quot;,&quot;reviewer_name&quot;:&quot;Jonathan&quot;,&quot;comments&quot;:&quot;Mohammed’s place was very spacious and clean. The parking lot across from he street was very helpful and the proximity to nightlife, great restaurants and shopping were a major bonus!&quot;},{&quot;_id&quot;:&quot;258127908&quot;,&quot;date&quot;:&quot;2018-04-28T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;182085107&quot;,&quot;reviewer_name&quot;:&quot;Emad&quot;,&quot;comments&quot;:&quot;Great place, spacious, host is quick to get back to you and very polite. I would highly recommend this location.&quot;},{&quot;_id&quot;:&quot;258662618&quot;,&quot;date&quot;:&quot;2018-04-29T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;138733549&quot;,&quot;reviewer_name&quot;:&quot;Samuel&quot;,&quot;comments&quot;:&quot;Great host, very fast to respond! Great space and amazing location. Will definitely stay here again.&quot;},{&quot;_id&quot;:&quot;262352460&quot;,&quot;date&quot;:&quot;2018-05-08T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;142483548&quot;,&quot;reviewer_name&quot;:&quot;Parm&quot;,&quot;comments&quot;:&quot;Mohammed’s place was amazing! I asked him many questions as it was my first time using Airbnb and he was a big help! It was a great location as well everything was close to the apartment! I would definitely recommend to stay here he is a amazing host! \n\nThank you&quot;},{&quot;_id&quot;:&quot;263698410&quot;,&quot;date&quot;:&quot;2018-05-12T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;132008176&quot;,&quot;reviewer_name&quot;:&quot;Isabelle&quot;,&quot;comments&quot;:&quot;Super logement très bien situé&quot;},{&quot;_id&quot;:&quot;267391591&quot;,&quot;date&quot;:&quot;2018-05-21T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;181613981&quot;,&quot;reviewer_name&quot;:&quot;André&quot;,&quot;comments&quot;:&quot;Such a great location and Mohammed replied very fast&quot;},{&quot;_id&quot;:&quot;268292962&quot;,&quot;date&quot;:&quot;2018-05-24T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;182189232&quot;,&quot;reviewer_name&quot;:&quot;Pauline&quot;,&quot;comments&quot;:&quot;Thank you for the amazing stay. Will certainly be back here if I come to Montreal again&quot;},{&quot;_id&quot;:&quot;270198856&quot;,&quot;date&quot;:&quot;2018-05-28T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;16924761&quot;,&quot;reviewer_name&quot;:&quot;Anna&quot;,&quot;comments&quot;:&quot;Great location! Walking distance to all downtown areas.&quot;},{&quot;_id&quot;:&quot;272932438&quot;,&quot;date&quot;:&quot;2018-06-04T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;63252832&quot;,&quot;reviewer_name&quot;:&quot;Julia&quot;,&quot;comments&quot;:&quot;We really loved the location of the apartment and how spacious it was. \nMohammed was super helpful and quick to respond. Very easy check in / check out process. \nWould recommend fo a group hoping to be downtown / or in the city for something at either McGill or Concordia, very short walking to either. \n&quot;},{&quot;_id&quot;:&quot;275743087&quot;,&quot;date&quot;:&quot;2018-06-11T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;24069918&quot;,&quot;reviewer_name&quot;:&quot;Dan&quot;,&quot;comments&quot;:&quot;Everything was great and location was the best with all the places around Rue Crescent st.\nMohammed is a great communicator and made sure everything we needed was taken care of promptly.\nBest location in that area and would highly recommend to anyone.\nThanks Again!!!&quot;},{&quot;_id&quot;:&quot;278188621&quot;,&quot;date&quot;:&quot;2018-06-17T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;49269260&quot;,&quot;reviewer_name&quot;:&quot;Sumaiya&quot;,&quot;comments&quot;:&quot;The place was good in terms of location. The place from inside is a bit run down...the furniture seems to b of low (Website hidden by Airbnb) of the beds broke when we sat on it...then there were water issues as there was no water when we woke up in the morning. The host was kind enough to refund 50 percent of the amount charged though.&quot;},{&quot;_id&quot;:&quot;281784773&quot;,&quot;date&quot;:&quot;2018-06-25T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;176824730&quot;,&quot;reviewer_name&quot;:&quot;Michael&quot;,&quot;comments&quot;:&quot;Great place with great location&quot;},{&quot;_id&quot;:&quot;283288368&quot;,&quot;date&quot;:&quot;2018-06-29T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;148318275&quot;,&quot;reviewer_name&quot;:&quot;Tanja&quot;,&quot;comments&quot;:&quot;We were a group of graduate students from Southwestern Ontario visiting Montreal for the first time for a conference. From the get go, Mohammed was a great host. He got back to us within a few minutes and was great with all of our questions. The process of checking in was a breeze and the key was waiting for us. There were lots of towels, pillows, blankets, and other essentials. The beds were comfortable,  there were lots of windows which allowed for natural light, and the space was very inviting! When we booked, the amenity \&quot;breakfast included\&quot; was on the list (accidentally), and because of this mix-up, Mohammed had breakfast delivered to us. It was delicious and very kind of him! The location is prime -- it is right near everything! There is a Starbucks right next door and a convenience store a couple of doors down. It&#x27;s close to shopping sites on Rue Saint Catherine, including a large Forever 21. Uber was very accessible with this location! It was our first time ever using Airbnb and we had a great experience. Thank you to Mohammed! Recommend this as a place to stay in Montreal!&quot;},{&quot;_id&quot;:&quot;285380527&quot;,&quot;date&quot;:&quot;2018-07-03T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;88785178&quot;,&quot;reviewer_name&quot;:&quot;Addie&quot;,&quot;comments&quot;:&quot;This place is a fabulous find and an amazing value! Walking distance to museums, many delicious restaurants, and all types of shopping. It&#x27;s great for a family with kids and has three queen sized beds that are very comfortable. Mohammed was incredibly helpful and responded to messages very quickly. We would absolutely stay here again!&quot;},{&quot;_id&quot;:&quot;287015769&quot;,&quot;date&quot;:&quot;2018-07-07T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;131176020&quot;,&quot;reviewer_name&quot;:&quot;Rosemary&quot;,&quot;comments&quot;:&quot;Very spacious apartment. Beds and pillows were very comfortable. Mohammed was very accommodating with his quick responses to any questions or concerns we had. Very great location!&quot;},{&quot;_id&quot;:&quot;289512331&quot;,&quot;date&quot;:&quot;2018-07-12T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;33078393&quot;,&quot;reviewer_name&quot;:&quot;Amanda&quot;,&quot;comments&quot;:&quot;Mohammed was extremely responsive and very hospitable. He gave us an extra set of keys upon request and arranged to fix an issue with one of the beds as soon as we reported it. The location of the apartment is excellent. It&#x27;s right in the heart of the Golden Mile and was close to the conference center that I needed. My only concerns were the upkeep of the furniture/kitchen. Some of it is worn or in disrepair. It seems people might be smoking in the unit as well (we are non-smokers so the smell was very obvious to us). However, even with these limitations, we were very comfortable and we enjoyed this space.&quot;},{&quot;_id&quot;:&quot;291174687&quot;,&quot;date&quot;:&quot;2018-07-15T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;83291810&quot;,&quot;reviewer_name&quot;:&quot;Tayyaba&quot;,&quot;comments&quot;:&quot;This place was in the IDEAL location. Super cute and cozy - perfect for a weekend getaway. We loved the big windows and two bathrooms. There was also shampoo and conditioner and a hair dryer. The stove was under construction but we didn&#x27;t need it. Will definitely recommend this place!&quot;},{&quot;_id&quot;:&quot;292653088&quot;,&quot;date&quot;:&quot;2018-07-18T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;116074194&quot;,&quot;reviewer_name&quot;:&quot;Wieslaw&quot;,&quot;comments&quot;:&quot;Nice place and location&quot;},{&quot;_id&quot;:&quot;293083989&quot;,&quot;date&quot;:&quot;2018-07-19T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;180250530&quot;,&quot;reviewer_name&quot;:&quot;Gustavo&quot;,&quot;comments&quot;:&quot;Un lugar confortable y con ubicación perfecta en la ciudad.&quot;},{&quot;_id&quot;:&quot;294779448&quot;,&quot;date&quot;:&quot;2018-07-22T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;64481974&quot;,&quot;reviewer_name&quot;:&quot;Alyssa&quot;,&quot;comments&quot;:&quot;The location was amazing and super close to downtown. The bedding was super soft and the beds were very confortable! This place has the potential to be incredible! Beautiful floor to ceiling windows throughout. The bedroom with one bed could do with some blackout blinds as it gets very bright very early (6am!). Mohammed did provide a sleep mask and now I understand why! There are some small things that I think could be added to improve this condo! Things like adding a towel rack with hand towels in the bathrooms, fixing the drop in the floors in the bathrooms (stubbed my toe a few times at night), fixing the missing oven cover, fixing the drawer in the kitchen (as was mentioned to me after we arrived) and the broken handles on the bathroom cupboards would make a huge difference in this place! For the price, this place is definitely worth it. The location itself made it a fabulous stay. Other than a few minor details, we loved the place and would definitely stay again. &quot;},{&quot;_id&quot;:&quot;298701268&quot;,&quot;date&quot;:&quot;2018-07-29T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;148139438&quot;,&quot;reviewer_name&quot;:&quot;Joel&quot;,&quot;comments&quot;:&quot;Mohammed was very responsive: buzzed us into the place immediately, shared a second set of keys upon request and quickly. The only reason the review was four and not five stars is that the place was a bit worn (loose fixtures, limited kitchenware). Overall, we were very pleased with the stay, location, value, and certainly the host&#x27;s responsiveness.&quot;},{&quot;_id&quot;:&quot;300634774&quot;,&quot;date&quot;:&quot;2018-08-02T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;155268491&quot;,&quot;reviewer_name&quot;:&quot;Christian&quot;,&quot;comments&quot;:&quot;Place was expected. Well furnished. Even though the kitchen could be better equipped. All in all a spacious apartment right in the middle of downtown.&quot;},{&quot;_id&quot;:&quot;303049795&quot;,&quot;date&quot;:&quot;2018-08-06T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;1838653&quot;,&quot;reviewer_name&quot;:&quot;Sandra&quot;,&quot;comments&quot;:&quot;Mohammed was a very good host. He was very quick to respond and answer any questions I had during my stay! We were a group of girls celebrating a bachelorette weekend (the two bathrooms were key) and the place was in a very good location downtown. It was also spacious and comfortable. It was a great value and I would highly recommend it to anyone.&quot;},{&quot;_id&quot;:&quot;304958218&quot;,&quot;date&quot;:&quot;2018-08-10T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;201843101&quot;,&quot;reviewer_name&quot;:&quot;Melissa&quot;,&quot;comments&quot;:&quot;Location was absolutely fantastic! Place was very nice and clean. The only reason it didn’t make 5 stars is that parking was a bit hard to find at times and would lead to a lot of driving around or a $30 overnight parking lot which can add up. Other than that our stay was very pleasant and if we are back in Montreal we would definitely stay in the same place!&quot;},{&quot;_id&quot;:&quot;306353648&quot;,&quot;date&quot;:&quot;2018-08-12T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;82791&quot;,&quot;reviewer_name&quot;:&quot;Jennifer&quot;,&quot;comments&quot;:&quot;Mohammed&#x27;s place was great.  It was very clean and the space is huge with high ceilings and lots of big windows which provide amazing natural light throughout the day. The location is amazing and everything is walking distance away. Check in was a breeze. I would definitely recommend this place to others and I would book again in the future.&quot;},{&quot;_id&quot;:&quot;308486909&quot;,&quot;date&quot;:&quot;2018-08-16T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;4834318&quot;,&quot;reviewer_name&quot;:&quot;Charm&quot;,&quot;comments&quot;:&quot;Large, Awesome spot to venture through the city. Easy and great communication with owner.&quot;},{&quot;_id&quot;:&quot;309654350&quot;,&quot;date&quot;:&quot;2018-08-18T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;45741778&quot;,&quot;reviewer_name&quot;:&quot;Tracey&quot;,&quot;comments&quot;:&quot;Mohammed was very responsive. The location is wonderful.  The apartment is very large with huge windows that open like patio doors.  The kitchen needs some attention. Missing drawer front, missing oven door front, not many plates cups, utensils. Great location. It smelled like smoke - could be an amazing place but all the little things have to be corrected.  I have stayed in many airbnb&#x27;s and this is the first one I wasn&#x27;t super pleased.  Mohammed was very responsive- didn&#x27;t ever meet him in person. &quot;},{&quot;_id&quot;:&quot;317922338&quot;,&quot;date&quot;:&quot;2018-09-03T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;112132496&quot;,&quot;reviewer_name&quot;:&quot;Laurie&quot;,&quot;comments&quot;:&quot;There were dirty dishes left in the dishwasher... the bathrooms were not cleaned well... the kitchen was in need of repairs and the apartment was not secure.  We didn&#x27;t stay.&quot;},{&quot;_id&quot;:&quot;321550958&quot;,&quot;date&quot;:&quot;2018-09-10T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;180623531&quot;,&quot;reviewer_name&quot;:&quot;Sarah&quot;,&quot;comments&quot;:&quot;Stylish apartment in downtown Montreal.  Very close to all amenities.&quot;},{&quot;_id&quot;:&quot;323010155&quot;,&quot;date&quot;:&quot;2018-09-14T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;117031952&quot;,&quot;reviewer_name&quot;:&quot;Jose&quot;,&quot;comments&quot;:&quot;Very good place and very good location in wonderful apartament. Perfect for 6 person no more.&quot;},{&quot;_id&quot;:&quot;324053198&quot;,&quot;date&quot;:&quot;2018-09-16T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;188200076&quot;,&quot;reviewer_name&quot;:&quot;Omeed&quot;,&quot;comments&quot;:&quot;Good price for a great location!&quot;},{&quot;_id&quot;:&quot;325424942&quot;,&quot;date&quot;:&quot;2018-09-19T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;31219506&quot;,&quot;reviewer_name&quot;:&quot;Keith&quot;,&quot;comments&quot;:&quot;Good host. Very prompt with communication and the apartment is very nice. Good location that is close to all of Montreal.&quot;},{&quot;_id&quot;:&quot;329311474&quot;,&quot;date&quot;:&quot;2018-09-28T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;25792801&quot;,&quot;reviewer_name&quot;:&quot;Debra&quot;,&quot;comments&quot;:&quot;We are still talking about how great this condo was for us. The location is unbeatable - a block and a half from the Museum of Fine Arts, three blocks from the Bell Centre and the grocery store, in the middle of shopping, bars and restaurants galore. We were two couples and the layout was perfect - bedrooms private and separate, queen beds in both and two bathrooms which is not common in Montreal.  We loved the spacious open concept living area, the comfortable furniture and preparing meals in the kitchen. Great gathering spot for us to sit and recount our daily exploits. Building is safe and secure and we were made to feel welcome. Expect light and noise because you are right downtown. Did not bother us as we found the windows really block the sound.  All in all the perfect spot for enjoying marvellous Montreal.&quot;},{&quot;_id&quot;:&quot;329779814&quot;,&quot;date&quot;:&quot;2018-09-29T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;120579628&quot;,&quot;reviewer_name&quot;:&quot;Christine&quot;,&quot;comments&quot;:&quot;A beautiful spacious apartment in a great location, in need of a bit of tender loving care.&quot;},{&quot;_id&quot;:&quot;330480856&quot;,&quot;date&quot;:&quot;2018-09-30T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;93647098&quot;,&quot;reviewer_name&quot;:&quot;Emilie&quot;,&quot;comments&quot;:&quot;Mohammed&#x27;s place was great for 6 of us! The place has plenty of space for a group of people and the location could not have been better!&quot;},{&quot;_id&quot;:&quot;332129565&quot;,&quot;date&quot;:&quot;2018-10-04T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;215207518&quot;,&quot;reviewer_name&quot;:&quot;Laura&quot;,&quot;comments&quot;:&quot;Ein sehr schickes und sauberes Appartement  mitten in Montreal. Sehr gefallen haben uns die Kleinigkeiten, wie Bilder und Dekos, die die Wohnungen nochmal wohnlicher machten. Zur Sauberkeit gibt es absolut nichts auszusetzen. Die Kommunikation war spitze und es gab auf alle Fragen in kürzester Zeit die passende Antwort.&quot;},{&quot;_id&quot;:&quot;333730795&quot;,&quot;date&quot;:&quot;2018-10-07T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;69649749&quot;,&quot;reviewer_name&quot;:&quot;Vida&quot;,&quot;comments&quot;:&quot;Great location&quot;},{&quot;_id&quot;:&quot;334219574&quot;,&quot;date&quot;:&quot;2018-10-08T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;216785055&quot;,&quot;reviewer_name&quot;:&quot;Jex&quot;,&quot;comments&quot;:&quot;Recommended place.&quot;},{&quot;_id&quot;:&quot;337150355&quot;,&quot;date&quot;:&quot;2018-10-15T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;18614384&quot;,&quot;reviewer_name&quot;:&quot;Jules&quot;,&quot;comments&quot;:&quot;The location was great! Enough space for everyone in our group. Any questions or issues we had got quick responses. Would definitely stay again for a longer trip.&quot;},{&quot;_id&quot;:&quot;339442617&quot;,&quot;date&quot;:&quot;2018-10-21T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;216891867&quot;,&quot;reviewer_name&quot;:&quot;Craig&quot;,&quot;comments&quot;:&quot;Great downtown location...near everything. Just a quick Uber to Old Montreal. Large clean apartment!&quot;},{&quot;_id&quot;:&quot;341290935&quot;,&quot;date&quot;:&quot;2018-10-26T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;45515048&quot;,&quot;reviewer_name&quot;:&quot;Muriel&quot;,&quot;comments&quot;:&quot;Condo exceptionnel idéalement placé, manque un peu de vaisselle, on conseille tout de même&quot;},{&quot;_id&quot;:&quot;342272699&quot;,&quot;date&quot;:&quot;2018-10-28T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;145330525&quot;,&quot;reviewer_name&quot;:&quot;Sophie&quot;,&quot;comments&quot;:&quot;This place is in the perfect location. Close to bars, restaurants, shopping ..&quot;},{&quot;_id&quot;:&quot;344475982&quot;,&quot;date&quot;:&quot;2018-11-03T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;58716996&quot;,&quot;reviewer_name&quot;:&quot;Jeremy&quot;,&quot;comments&quot;:&quot;very nice stay! clean appartment&quot;},{&quot;_id&quot;:&quot;348067866&quot;,&quot;date&quot;:&quot;2018-11-12T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;214521465&quot;,&quot;reviewer_name&quot;:&quot;Guemslyse&quot;,&quot;comments&quot;:&quot;Nice apartment with an amazing host. The apartment was very clean and modern with a great view. The place was super cute and spacious. Location was great! It was very easy to get to different tourist locations, and there were great restaurants close by.&quot;},{&quot;_id&quot;:&quot;348604935&quot;,&quot;date&quot;:&quot;2018-11-14T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;13866399&quot;,&quot;reviewer_name&quot;:&quot;Lisa&quot;,&quot;comments&quot;:&quot;What can I say Mo was an outstanding host and I had an amazing stay. The location is great walking distance to everything. The place was large and very comfortable&quot;},{&quot;_id&quot;:&quot;349450841&quot;,&quot;date&quot;:&quot;2018-11-17T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;224810783&quot;,&quot;reviewer_name&quot;:&quot;Lingang&quot;,&quot;comments&quot;:&quot;Nice communication and excellent location.&quot;},{&quot;_id&quot;:&quot;350053640&quot;,&quot;date&quot;:&quot;2018-11-18T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;66250163&quot;,&quot;reviewer_name&quot;:&quot;Steph&quot;,&quot;comments&quot;:&quot;Really nice apartment in a good location. Advertised for eight people but there was only three double beds. Mohammed replied to messages very quickly and was informative.&quot;},{&quot;_id&quot;:&quot;354906854&quot;,&quot;date&quot;:&quot;2018-12-02T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;156313845&quot;,&quot;reviewer_name&quot;:&quot;Justin&quot;,&quot;comments&quot;:&quot;great value and centrally located...will definitely rent here when I return to town.&quot;},{&quot;_id&quot;:&quot;357155585&quot;,&quot;date&quot;:&quot;2018-12-09T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;22124082&quot;,&quot;reviewer_name&quot;:&quot;Danika&quot;,&quot;comments&quot;:&quot;Best central location you can ask for in Montreal!&quot;},{&quot;_id&quot;:&quot;358231131&quot;,&quot;date&quot;:&quot;2018-12-13T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;104475669&quot;,&quot;reviewer_name&quot;:&quot;Spencer&quot;,&quot;comments&quot;:&quot;Nicely decorated space with a spectacular view of the city&quot;},{&quot;_id&quot;:&quot;359275656&quot;,&quot;date&quot;:&quot;2018-12-16T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;16537816&quot;,&quot;reviewer_name&quot;:&quot;Lucile&quot;,&quot;comments&quot;:&quot;Appartement très bien situé, spacieux et confortable. Nous nous y sommes sentis très bien. Mohammed a fait preuve d&#x27;une grande flexibilité pour s&#x27;adapter à nos horaires d&#x27;arrivée et de départ. Je recommande vivement cet appartement.&quot;},{&quot;_id&quot;:&quot;360192387&quot;,&quot;date&quot;:&quot;2018-12-19T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;227546011&quot;,&quot;reviewer_name&quot;:&quot;Casey&quot;,&quot;comments&quot;:&quot;It exceeded our expectation. Great location, super affordable. Would consider going back in a heartbeat.&quot;},{&quot;_id&quot;:&quot;361441793&quot;,&quot;date&quot;:&quot;2018-12-23T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;90339141&quot;,&quot;reviewer_name&quot;:&quot;Emily&quot;,&quot;comments&quot;:&quot;Great location!  Great space!  Highly recommend it&quot;},{&quot;_id&quot;:&quot;362538429&quot;,&quot;date&quot;:&quot;2018-12-26T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;162297145&quot;,&quot;reviewer_name&quot;:&quot;Tina&quot;,&quot;comments&quot;:&quot;lovely place . located in downtown so its very convince.&quot;},{&quot;_id&quot;:&quot;365769919&quot;,&quot;date&quot;:&quot;2019-01-01T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;48698495&quot;,&quot;reviewer_name&quot;:&quot;Roméo&quot;,&quot;comments&quot;:&quot;Juste rien à dire à par merci. Appartement et vacance au top. Mohammed est d&#x27;une incroyable réactivité&quot;},{&quot;_id&quot;:&quot;367734863&quot;,&quot;date&quot;:&quot;2019-01-05T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;140861199&quot;,&quot;reviewer_name&quot;:&quot;Yingqi&quot;,&quot;comments&quot;:&quot;Very kind and patient&quot;},{&quot;_id&quot;:&quot;400552896&quot;,&quot;date&quot;:&quot;2019-01-12T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;115826259&quot;,&quot;reviewer_name&quot;:&quot;Abul&quot;,&quot;comments&quot;:&quot;Ideal location, great place, modern amenities. We loved the view. Very spacious, would come back again.&quot;},{&quot;_id&quot;:&quot;401055721&quot;,&quot;date&quot;:&quot;2019-01-13T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;164119164&quot;,&quot;reviewer_name&quot;:&quot;Keven&quot;,&quot;comments&quot;:&quot;appartement très bien situé en plein centre ville de montréal. les lits et la vue sont super. Quelques reparation sont en cours et quelque bris ici et là mais très bien dans l&#x27;ensemble&quot;},{&quot;_id&quot;:&quot;401935665&quot;,&quot;date&quot;:&quot;2019-01-16T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;228184544&quot;,&quot;reviewer_name&quot;:&quot;Jonathan&quot;,&quot;comments&quot;:&quot;Great place! Great location!&quot;},{&quot;_id&quot;:&quot;403795250&quot;,&quot;date&quot;:&quot;2019-01-21T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;173872855&quot;,&quot;reviewer_name&quot;:&quot;Chandlar&quot;,&quot;comments&quot;:&quot;Amazing location and perfect for a weekend getaway with a big group, very spacious&quot;},{&quot;_id&quot;:&quot;404557014&quot;,&quot;date&quot;:&quot;2019-01-24T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;173836711&quot;,&quot;reviewer_name&quot;:&quot;Salma&quot;,&quot;comments&quot;:&quot;We were delighted with our stay at Mohammed’s apartment. We stayed one night and we wished we could’ve stayed more. The room is extremely nice and clean, and Mohammed was very attentive to our needs. Would definitely recommend!!&quot;},{&quot;_id&quot;:&quot;406701035&quot;,&quot;date&quot;:&quot;2019-01-30T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;107127153&quot;,&quot;reviewer_name&quot;:&quot;Anslem&quot;,&quot;comments&quot;:&quot;Great space in the heart of downtown. Very clean and stylish&quot;},{&quot;_id&quot;:&quot;408510173&quot;,&quot;date&quot;:&quot;2019-02-04T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;225628393&quot;,&quot;reviewer_name&quot;:&quot;Doug&quot;,&quot;comments&quot;:&quot;This place is as advertised and the reviews I researched before booking turned out to be accurate. It&#x27;s around the corner from Crescent Street, shopping and the Bell Centre are within easy walking distance. Bldg is modern, easy in and out. Mohammed was quick to respond to any questions. Would definitely book again.&quot;},{&quot;_id&quot;:&quot;409710413&quot;,&quot;date&quot;:&quot;2019-02-08T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;144307062&quot;,&quot;reviewer_name&quot;:&quot;Robyn&quot;,&quot;comments&quot;:&quot;Great location if you are planning on spending your time in MTL downtown! Close to everything!\nThe apartment was very nice and modern. My only complaint would be that the oven was broken - but I didn’t plan on doing much cooking anyways. Would definitely stay here again!&quot;},{&quot;_id&quot;:&quot;410627467&quot;,&quot;date&quot;:&quot;2019-02-10T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;94672714&quot;,&quot;reviewer_name&quot;:&quot;Ryan&quot;,&quot;comments&quot;:&quot;Great location, great value. Would definitely book again!&quot;},{&quot;_id&quot;:&quot;411792827&quot;,&quot;date&quot;:&quot;2019-02-13T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;15798981&quot;,&quot;reviewer_name&quot;:&quot;Teresa&quot;,&quot;comments&quot;:&quot;awesome place to stay :)&quot;},{&quot;_id&quot;:&quot;412823812&quot;,&quot;date&quot;:&quot;2019-02-16T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;214837453&quot;,&quot;reviewer_name&quot;:&quot;Shahriar&quot;,&quot;comments&quot;:&quot;It was a very nice place, best location. Anything that you need, you can find in unit. I definitely recommend this place.&quot;},{&quot;_id&quot;:&quot;413586368&quot;,&quot;date&quot;:&quot;2019-02-17T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;88585616&quot;,&quot;reviewer_name&quot;:&quot;Sabrina&quot;,&quot;comments&quot;:&quot;It’s a lovely place, big space fits well for six, perfect room distribution that was just right for us :)&quot;},{&quot;_id&quot;:&quot;416915967&quot;,&quot;date&quot;:&quot;2019-02-25T05:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;22973623&quot;,&quot;reviewer_id&quot;:&quot;164255504&quot;,&quot;reviewer_name&quot;:&quot;Alejandra&quot;,&quot;comments&quot;:&quot;Great location. Mohammed is a great host!&quot;}]},{&quot;_id&quot;:&quot;18134491&quot;,&quot;listing_url&quot;:&quot;https://www.airbnb.com/rooms/18134491&quot;,&quot;name&quot;:&quot;Flat Duplex Ipanema All Service Luxo Com Serviços&quot;,&quot;summary&quot;:&quot;Apart localizado em Ipanema, a poucos metros da Lagoa Rodrigo de Freitas, o Ipanema Ville Residence Service é a opção ideal para quem deseja o melhor do Rio de Janeiro. Lazer e praticidade unidos para proporcionar conforto e segurança. Estrutura:  Área Privativa Metragem em média: 115 m² Apartamento: 02 quartos, 02 salas, 02 ban TV p/ assinatura Varanda Áreas Comuns e Serviços  Central telefônica (DDD e DDI), Fax, Coffee shop, Lavanderia, Piscina, Sala de ginástica e musculação e Sauna a vapor.&quot;,&quot;space&quot;:&quot;Apart-hotel em Ipanema com garagem e serviços - melhor lugar no Rio de Janeiro! 1 quadra de distância do metro; 5 quadras da praia de Ipanema e 8 quadras da praia de Copacabana. Este apartamento confortável, oferece fácil acesso a todos os pontos turísticos da cidade, perto de supermercados, restaurantes e comércio. Fica a cinco minutos a pé da praia, todo tipo de comércio em frente e tem portaria 24h o que dá bastante segurança. Descrição das instalações: o apartamento tem 115 m2, 2 salas com ar condicionado, uma TV de tela plana de 48&#x27;, dois sofá-cama , mesa e cadeiras, mesa para o uso de notebook e acesso à internet wi-fi para tornar a sua estadia agradável. Sala com varanda. Quarto equipado com ar condicionado, cama de casal com colchão confortável, varanda e uma TV de tela plana 26\&quot;.  Banheiro com chuveiro quente, cozinha totalmente equipada com forno de microondas e utensílios de cozinha, TV a cabo, acesso wi-fi à Internet e telefone. Você terá acesso a: garagem, sauna, piscina, &quot;,&quot;description&quot;:&quot;Apart localizado em Ipanema, a poucos metros da Lagoa Rodrigo de Freitas, o Ipanema Ville Residence Service é a opção ideal para quem deseja o melhor do Rio de Janeiro. Lazer e praticidade unidos para proporcionar conforto e segurança. Estrutura:  Área Privativa Metragem em média: 115 m² Apartamento: 02 quartos, 02 salas, 02 ban TV p/ assinatura Varanda Áreas Comuns e Serviços  Central telefônica (DDD e DDI), Fax, Coffee shop, Lavanderia, Piscina, Sala de ginástica e musculação e Sauna a vapor. Apart-hotel em Ipanema com garagem e serviços - melhor lugar no Rio de Janeiro! 1 quadra de distância do metro; 5 quadras da praia de Ipanema e 8 quadras da praia de Copacabana. Este apartamento confortável, oferece fácil acesso a todos os pontos turísticos da cidade, perto de supermercados, restaurantes e comércio. Fica a cinco minutos a pé da praia, todo tipo de comércio em frente e tem portaria 24h o que dá bastante segurança. Descrição das instalações: o apartamento tem 115 m2, 2 salas com a&quot;,&quot;neighborhood_overview&quot;:&quot;Ipanema é um bairro nobre da cidade brasileira do Rio de Janeiro, fundado, em 1894, por José Antônio Moreira, conde de Ipanema. Faz divisa com os bairros de Copacabana, Leblon e Lagoa. Etimologia O nome dado pelos índios Ipanema significa \&quot;água ruim, rio sem peixes\&quot; em tupi-guarani. O nome faz referência a uma região em Sorocaba, onde José Antônio Moreira Filho ((PHONE NUMBER HIDDEN)), feito segundo barão de Ipanema em 1847 (e conde em 1868), tinha uma metalúrgica. Nessa mesma região, havia a Real Fábrica de Ferro São João do Ipanema, aos pés do Morro de Ipanema. Era um minerador e comprou as terras onde hoje está localizado o bairro carioca e decidiu homenagear seu local de nascimento, a vila de São João de Ipanema, hoje pertencente a cidade de Iperó. História O desenvolvimento da Zona Sul foi forçado pela chegada da corte portuguesa no século XIX, quando a população da cidade (capital na ocasião) passou de sessenta mil para quinhentos mil habitantes. A corte preferiu seguir rumo nort&quot;,&quot;notes&quot;:&quot;- Porteiro 24 horas diariamente. - Cameras de segurança por todo o prédio. - Próximo ao Metrô, pontos de ônibus e taxis  - Proximo aos supermercados do bairro.&quot;,&quot;transit&quot;:&quot;A Estação Nossa Senhora da Paz e General Osório são estações de metrô situadas no bairro de Ipanema, na cidade do Rio de Janeiro. Antes de sua inauguração, a estação Gal Osorio, cogitou-se que se chamaria Tom Jobim.  Near the station 4, and the subway street - Gal Osorio station, which greatly facilitates the movement! You will love my space because the location is special!&quot;,&quot;access&quot;:&quot;Piscina, sauna, lavanderia, academia de ginástica, recepção, living, Wi Fi, Tv a cabo, garagem e limpeza diária do apartamento por 20min.&quot;,&quot;interaction&quot;:&quot;Estarei sempre a disposição por whatsaap.&quot;,&quot;house_rules&quot;:&quot;Hospedes que fizerem reservas de longa duração, nao terao direto a troca de roupa de cama e banho!&quot;,&quot;property_type&quot;:&quot;Serviced apartment&quot;,&quot;room_type&quot;:&quot;Entire home/apt&quot;,&quot;bed_type&quot;:&quot;Real Bed&quot;,&quot;minimum_nights&quot;:&quot;4&quot;,&quot;maximum_nights&quot;:&quot;1124&quot;,&quot;cancellation_policy&quot;:&quot;moderate&quot;,&quot;last_scraped&quot;:&quot;2019-02-11T05:00:00.000Z&quot;,&quot;calendar_last_scraped&quot;:&quot;2019-02-11T05:00:00.000Z&quot;,&quot;first_review&quot;:&quot;2018-03-30T04:00:00.000Z&quot;,&quot;last_review&quot;:&quot;2018-06-04T04:00:00.000Z&quot;,&quot;accommodates&quot;:8,&quot;bedrooms&quot;:2,&quot;beds&quot;:4,&quot;number_of_reviews&quot;:2,&quot;bathrooms&quot;:{&quot;$numberDecimal&quot;:&quot;2.0&quot;},&quot;amenities&quot;:[&quot;TV&quot;,&quot;Cable TV&quot;,&quot;Internet&quot;,&quot;Wifi&quot;,&quot;Air conditioning&quot;,&quot;Wheelchair accessible&quot;,&quot;Pool&quot;,&quot;Kitchen&quot;,&quot;Free parking on premises&quot;,&quot;Doorman&quot;,&quot;Gym&quot;,&quot;Elevator&quot;,&quot;Buzzer/wireless intercom&quot;,&quot;Washer&quot;,&quot;Dryer&quot;,&quot;Smoke detector&quot;,&quot;Carbon monoxide detector&quot;,&quot;Fire extinguisher&quot;,&quot;Essentials&quot;,&quot;Shampoo&quot;,&quot;Lock on bedroom door&quot;,&quot;24-hour check-in&quot;,&quot;Hangers&quot;,&quot;Hair dryer&quot;,&quot;Iron&quot;,&quot;Laptop friendly workspace&quot;,&quot;translation missing: en.hosting_amenity_49&quot;,&quot;translation missing: en.hosting_amenity_50&quot;,&quot;Self check-in&quot;,&quot;Building staff&quot;,&quot;Private entrance&quot;,&quot;Room-darkening shades&quot;,&quot;Hot water&quot;,&quot;Bed linens&quot;,&quot;Extra pillows and blankets&quot;,&quot;Ethernet connection&quot;,&quot;Pocket wifi&quot;,&quot;Microwave&quot;,&quot;Coffee maker&quot;,&quot;Refrigerator&quot;,&quot;Dishes and silverware&quot;,&quot;Cooking basics&quot;,&quot;Oven&quot;,&quot;Stove&quot;,&quot;Patio or balcony&quot;,&quot;Beach essentials&quot;,&quot;Luggage dropoff allowed&quot;,&quot;Long term stays allowed&quot;,&quot;Cleaning before checkout&quot;,&quot;Wide hallway clearance&quot;,&quot;Step-free access&quot;,&quot;Flat path to front door&quot;,&quot;Well-lit path to entrance&quot;,&quot;Step-free access&quot;,&quot;Wide clearance to bed&quot;,&quot;Accessible-height bed&quot;,&quot;Step-free access&quot;,&quot;Step-free access&quot;,&quot;Wide entryway&quot;,&quot;Lake access&quot;],&quot;price&quot;:{&quot;$numberDecimal&quot;:&quot;601.00&quot;},&quot;security_deposit&quot;:{&quot;$numberDecimal&quot;:&quot;2000.00&quot;},&quot;cleaning_fee&quot;:{&quot;$numberDecimal&quot;:&quot;400.00&quot;},&quot;extra_people&quot;:{&quot;$numberDecimal&quot;:&quot;50.00&quot;},&quot;guests_included&quot;:{&quot;$numberDecimal&quot;:&quot;4&quot;},&quot;images&quot;:{&quot;thumbnail_url&quot;:&quot;&quot;,&quot;medium_url&quot;:&quot;&quot;,&quot;picture_url&quot;:&quot;https://a0.muscache.com/im/pictures/3c61562a-de44-48d1-8c38-421cbed661b5.jpg?aki_policy&#x3D;large&quot;,&quot;xl_picture_url&quot;:&quot;&quot;},&quot;host&quot;:{&quot;host_id&quot;:&quot;95597326&quot;,&quot;host_url&quot;:&quot;https://www.airbnb.com/users/show/95597326&quot;,&quot;host_name&quot;:&quot;Veronica&quot;,&quot;host_location&quot;:&quot;Rio de Janeiro, State of Rio de Janeiro, Brazil&quot;,&quot;host_about&quot;:&quot;Falar de nós mesmo soa falso....Corremos o risco de exagerar as virtudes e minorar os defeitos.....Porém para que os nossos amigos tenham uma idéia da nossa personalidade, tentaremos de alguma forma falar de nós por nós mesmos......Independentes sempre....Prezamos a capacidade do ser humano de ir além dos seus limites, reconhecer um erro pedir perdão e perdoar.....Oferecer alento estender a mão, compartilhar o bom e o belo, aprender constantemente com quem tem muito a ensinar...Ser o Sol da nossa família isto sim nos dá prazer e orgulho, estarmos e sermos para eles e por eles acima de tudo, Renunciarmos o que nos causa dor o que nos faz mal, não gostamos do desgaste da teimosia diante do incontestável, mas vamos adiante em nossos propósitos se eles realmente valerem a pena, raramente voltamos atrás em nossas decisões, pois pensamos muito antes de (Website hidden by Airbnb) conseqüências são assumidas com a maturidade adquirida. Amar e sermos amado, pois o amor é fundamental em nossas vidas.\r\n\r\n (Hidden by Airbnb) : @verofabris&quot;,&quot;host_response_time&quot;:&quot;within a few hours&quot;,&quot;host_thumbnail_url&quot;:&quot;https://a0.muscache.com/im/pictures/07eb562d-ae96-4fba-bf99-185be4ad3352.jpg?aki_policy&#x3D;profile_small&quot;,&quot;host_picture_url&quot;:&quot;https://a0.muscache.com/im/pictures/07eb562d-ae96-4fba-bf99-185be4ad3352.jpg?aki_policy&#x3D;profile_x_medium&quot;,&quot;host_neighbourhood&quot;:&quot;Ipanema&quot;,&quot;host_response_rate&quot;:100,&quot;host_is_superhost&quot;:false,&quot;host_has_profile_pic&quot;:true,&quot;host_identity_verified&quot;:true,&quot;host_listings_count&quot;:3,&quot;host_total_listings_count&quot;:3,&quot;host_verifications&quot;:[&quot;email&quot;,&quot;phone&quot;,&quot;facebook&quot;,&quot;google&quot;,&quot;reviews&quot;,&quot;jumio&quot;,&quot;government_id&quot;]},&quot;address&quot;:{&quot;street&quot;:&quot;Rio de Janeiro, Rio de Janeiro, Brazil&quot;,&quot;suburb&quot;:&quot;Ipanema&quot;,&quot;government_area&quot;:&quot;Lagoa&quot;,&quot;market&quot;:&quot;Rio De Janeiro&quot;,&quot;country&quot;:&quot;Brazil&quot;,&quot;country_code&quot;:&quot;BR&quot;,&quot;location&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-43.20396556253349,-22.97874838432402],&quot;is_location_exact&quot;:false}},&quot;availability&quot;:{&quot;availability_30&quot;:0,&quot;availability_60&quot;:0,&quot;availability_90&quot;:0,&quot;availability_365&quot;:0},&quot;review_scores&quot;:{&quot;review_scores_accuracy&quot;:10,&quot;review_scores_cleanliness&quot;:10,&quot;review_scores_checkin&quot;:10,&quot;review_scores_communication&quot;:9,&quot;review_scores_location&quot;:10,&quot;review_scores_value&quot;:8,&quot;review_scores_rating&quot;:90},&quot;reviews&quot;:[{&quot;_id&quot;:&quot;248030219&quot;,&quot;date&quot;:&quot;2018-03-30T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;18134491&quot;,&quot;reviewer_id&quot;:&quot;25449086&quot;,&quot;reviewer_name&quot;:&quot;Francisca&quot;,&quot;comments&quot;:&quot;This duplex is in an amazing location in Ipanema - safe and quiet, yet close to restaurants, bars and shops. The flat is actually two complete separate flats joined by an internal staircase - so unless you need that, you are paying for space (eg 2 kitchens) you don&#x27;t use... Two nice bedrooms, good WiFi, and importantly good air con! Nice with the common pool downstairs but not suited for sunbathing. A bit run down apart hotel but overall a good though expensive option.\n(And genius old school tape recorder on the sound deck - wish I knew, would have brought some of my old mix tapes that I can&#x27;t listen to any more!)&quot;},{&quot;_id&quot;:&quot;272968189&quot;,&quot;date&quot;:&quot;2018-06-04T04:00:00.000Z&quot;,&quot;listing_id&quot;:&quot;18134491&quot;,&quot;reviewer_id&quot;:&quot;20716413&quot;,&quot;reviewer_name&quot;:&quot;Julian&quot;,&quot;comments&quot;:&quot;Veronic is so nice and very helpful!&quot;}]}]</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-fc67549a-dea9-4fc4-94b4-fade9386c24f">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Check url</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Response time is less than 500ms</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Set slider initial position depending on the localstorage state -->
+
+<script>
+(function () {
+  var sliderChecked = true;
+  if (localStorage.getItem('theme') === 'theme-light') {
+    setTheme('theme-light');
+    sliderChecked = false;
+  } else {
+    setTheme('theme-dark');
+    sliderChecked = true;
+  }
+  $(document).ready( function () {
+    document.getElementById('slider').checked = sliderChecked;
+  });
+})();
+</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('.datatable').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Show/Hide The Folders -->
+
+<script>
+$('#openAll').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#folder-63cc7b5c-23fe-4bd8-8c9c-845a42fe7eaa-iteration-0').removeClass('collapsed')
+            $('#folder-collapse-63cc7b5c-23fe-4bd8-8c9c-845a42fe7eaa-iteration-0').addClass('show')
+        $('#openAll').html("Collapse Folders");
+        break;
+    case 2:
+            $('#folder-63cc7b5c-23fe-4bd8-8c9c-845a42fe7eaa-iteration-0').addClass('collapsed')
+            $('#folder-collapse-63cc7b5c-23fe-4bd8-8c9c-845a42fe7eaa-iteration-0').removeClass('show')
+        $('#openAll').html("Expand Folders");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('collapsed')
+            $('#collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('collapsed')
+            $('#requests-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('show')
+            $('#collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('show')
+            $('#requests-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('collapsed')
+            $('#collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('collapsed')
+            $('#requests-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('show')
+            $('#collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('show')
+            $('#requests-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('collapsed')
+            $('#collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('collapsed')
+            $('#requests-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('show')
+            $('#collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('show')
+            $('#requests-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('collapsed')
+            $('#collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('collapsed')
+            $('#requests-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('show')
+            $('#collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('show')
+            $('#requests-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('collapsed')
+            $('#collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('collapsed')
+            $('#requests-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('show')
+            $('#collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('collapsed')
+            $('#collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('collapsed')
+            $('#requests-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('show')
+            $('#collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('show')
+            $('#requests-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('collapsed')
+            $('#collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('collapsed')
+            $('#requests-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('show')
+            $('#collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('show')
+            $('#requests-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('collapsed')
+            $('#collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('collapsed')
+            $('#requests-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('show')
+            $('#collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('show')
+            $('#requests-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('collapsed')
+            $('#collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('collapsed')
+            $('#requests-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('show')
+            $('#collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('show')
+            $('#requests-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('collapsed')
+            $('#collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('collapsed')
+            $('#requests-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('show')
+            $('#collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('collapsed')
+            $('#skipped-collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('collapsed')
+            $('#skipped-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('show')
+            $('#skipped-collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('show')
+            $('#skipped-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('collapsed')
+            $('#skipped-collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('collapsed')
+            $('#skipped-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('show')
+            $('#skipped-collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('show')
+            $('#skipped-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('collapsed')
+            $('#skipped-collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('collapsed')
+            $('#skipped-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('show')
+            $('#skipped-collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('show')
+            $('#skipped-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('collapsed')
+            $('#skipped-collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('collapsed')
+            $('#skipped-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('show')
+            $('#skipped-collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('show')
+            $('#skipped-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('collapsed')
+            $('#skipped-collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('collapsed')
+            $('#skipped-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('show')
+            $('#skipped-collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('collapsed')
+            $('#skipped-collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').addClass('collapsed')
+            $('#skipped-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('show')
+            $('#skipped-collapse-74420b1e-f7a5-484d-8fb7-66fb5ed7dda0').removeClass('show')
+            $('#skipped-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('collapsed')
+            $('#skipped-collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').addClass('collapsed')
+            $('#skipped-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('show')
+            $('#skipped-collapse-8cb798e2-a7b3-49e7-922e-d2ae27c97097').removeClass('show')
+            $('#skipped-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('collapsed')
+            $('#skipped-collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').addClass('collapsed')
+            $('#skipped-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('show')
+            $('#skipped-collapse-098aab2d-584e-40c6-9f22-3e8f3c5e3029').removeClass('show')
+            $('#skipped-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('collapsed')
+            $('#skipped-collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').addClass('collapsed')
+            $('#skipped-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('show')
+            $('#skipped-collapse-0a34cfb4-ca5f-487c-b7e4-d20b527ed5b9').removeClass('show')
+            $('#skipped-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('collapsed')
+            $('#skipped-collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').addClass('collapsed')
+            $('#skipped-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('show')
+            $('#skipped-collapse-41fbe65c-eacc-4611-a712-a48bc5ba3b7e').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+let failedItemContent
+let failedItemHeading
+switch (clickCount){
+    case 1:
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAll").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "none";
+
+
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAll").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "block";
+
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // set display for all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'block';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode((i + 1)));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+      //set display to none for all except row
+      let allItems = document.querySelectorAll('[class*=iteration-]:not(.row)');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id + ':not(.row)');
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+    menu.appendChild(li);
+  }
+
+  //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+
+<script>
+$(document).ready(function(){
+    $(function() {
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+	    $("#showOnlyFailures").data("clickCount") ? $("#showOnlyFailures").click():null;
+        $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+});
+</script>
+
+<!-- Showing the Failed Interations -->
+
+<script>
+$('#showOnlyFailures').on('click', function(e) {
+    let clickCount = $(this).data("clickCount") || 1
+	$("#filterInput").val()!="" && clickCount==1 ? $("#filterInput").val('').trigger('input'): null;
+    let selectedIteration = $('#iterationList li').filter(function () {
+        return $(this).css('border-bottom').indexOf("solid") > -1 && $(this).hasClass('itFailed');
+    });
+    selectedIteration.length || clickCount > 1 ? null : $("#iterationList li.itFailed")[0].click()
+    $("#iterationList li.itPassed").toggle()
+    $("div.bg-success [id*=requests]").parents('[class^="row iteration-"]').toggle();
+    clickCount = clickCount > 1 ? 1 : ++clickCount;
+    clickCount > 1 ? $("#showOnlyFailures").html("Show All Iterations") : $("#showOnlyFailures").html("Show Failed Iterations");
+    $(this).data("clickCount", clickCount)
+})
+</script>
+</body>
+</html>
